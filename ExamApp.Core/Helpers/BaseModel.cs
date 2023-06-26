@@ -1,10 +1,11 @@
-﻿namespace ExamApp.Core.Helpers
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ExamApp.Core.Helpers
 {
     public class BaseModel
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
+        [StringLength(50)]
         public string Name { get; set; } = string.Empty;
-        public int RowNum { get; set; }
-        public bool DeleteStatus { get; set; }
     }
 }
