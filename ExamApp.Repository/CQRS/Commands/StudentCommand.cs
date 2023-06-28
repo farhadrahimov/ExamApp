@@ -11,9 +11,9 @@ namespace ExamApp.Repository.CQRS.Commands
 {
     public interface IStudentCommand
     {
-        Task<Guid> Add(Student item);
-        Task<Guid> Update(Student item);
-        Task<bool> Delete(Guid id);
+        Task<Guid> AddAsync(Student item);
+        Task<Guid> UpdateAsync(Student item);
+        Task<bool> DeleteAsync(Guid id);
     }
     public class StudentCommand : IStudentCommand
     {
@@ -21,16 +21,16 @@ namespace ExamApp.Repository.CQRS.Commands
 
         #region Queries
         private const string AddQuery = $@"INSERT INTO [dbo].[Students]
-                                                                [Number]
+                                                                ([Number]
                                                                ,[Name]
                                                                ,[SureName]
-                                                               ,[ClassId]
+                                                               ,[ClassId])
                                                          OUTPUT INSERTED.ID
                                                          VALUES
-                                                               @{nameof(Student.Number)}
+                                                               (@{nameof(Student.Number)}
                                                               ,@{nameof(Student.Name)}
                                                               ,@{nameof(Student.SureName)}
-                                                              ,@{nameof(Student.ClassId)}";
+                                                              ,@{nameof(Student.ClassId)})";
 
         private const string UpdateQuery = $@"UPDATE [dbo].[Students] SET
                                                                [Number] = @{nameof(Student.Number)}
@@ -49,7 +49,7 @@ namespace ExamApp.Repository.CQRS.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Guid> Add(Student item)
+        public async Task<Guid> AddAsync(Student item)
         {
             try
             {
@@ -63,11 +63,11 @@ namespace ExamApp.Repository.CQRS.Commands
             }
         }
 
-        public async Task<Guid> Update(Student item)
+        public async Task<Guid> UpdateAsync(Student item)
         {
             try
             {
-                var result = await _unitOfWork.GetConnection().QuerySingleAsync<Guid>(UpdateQuery, item, _unitOfWork.GetTransaction());
+                var result = await _unitOfWork.GetConnection().QueryAsync(UpdateQuery, item, _unitOfWork.GetTransaction());
                 return item.Id;
             }
             catch (Exception ex)
@@ -77,7 +77,7 @@ namespace ExamApp.Repository.CQRS.Commands
             }
         }
 
-        public async Task<bool> Delete(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
             try
             {

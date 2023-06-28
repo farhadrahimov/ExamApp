@@ -8,9 +8,9 @@ namespace ExamApp.Service.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddService(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddService(this IServiceCollection services)
         {
-            var repositoryAssembly = Assembly.GetAssembly(typeof(ExampleService));
+            var repositoryAssembly = Assembly.GetAssembly(typeof(StudentService));
             services.RegisterAssemblyPublicNonGenericClasses(repositoryAssembly)
                .Where(c => c.Name.EndsWith("Service"))
                .AsPublicImplementedInterfaces(ServiceLifetime.Scoped);

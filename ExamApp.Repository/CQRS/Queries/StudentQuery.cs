@@ -12,10 +12,10 @@ namespace ExamApp.Repository.CQRS.Queries
 {
     public interface IStudentQuery
     {
-        Task<IEnumerable<Student>> GetAll();
-        Task<Student> GetById(Guid id);
-        Task<ListResult<Student>> GetPagination(int offset, int limit);
-        Task<ListResult<Student>> GetFullSearch(int offset, int limit, string search);
+        Task<IEnumerable<Student>> GetAllAsync();
+        Task<Student> GetByIdAsync(Guid id);
+        Task<ListResult<Student>> GetPaginationAsync(int offset, int limit);
+        Task<ListResult<Student>> GetFullSearchAsync(int offset, int limit, string search);
     }
     public class StudentQuery : IStudentQuery
     {
@@ -47,10 +47,13 @@ namespace ExamApp.Repository.CQRS.Queries
 		                                                ,C.[Name] ClassName
 	                                                FROM [ExamDB].[dbo].[Students] AS S
 	                                                LEFT JOIN Classes AS C ON S.ClassId=C.Id WHERE S.[DeleteStatus] = 0
-	                                                ORDER BY S.[RowNum] DESC OFFSET @OFFSET ROWS FETCH NEXT @LIMIT ROWS ONLY";
+	                                                ORDER BY S.[RowNum] DESC OFFSET @OFFSET ROWS FETCH NEXT @LIMIT ROWS ONLY
 
-        private readonly string GetFullSearchQuery = @"DECLARE @SEARCHTEXT NVARCHAR(MAX) = '%' + @SEARCH + '%'
-                                                SELECT   S.[Id]
+                                                    SELECT COUNT([Id]) AS TotalCount FROM [ExamDB].[dbo].[Students] WHERE DeleteStatus = 0";
+
+        private string GetFullSearchQuery = @"DECLARE @SEARCHTEXT NVARCHAR(MAX) = '%' + {0} + '%' 
+                                                      SELECT
+                                                         S.[Id]
 		                                                ,S.[Number]
 		                                                ,S.[Name]
 		                                                ,S.[SureName]
@@ -59,14 +62,19 @@ namespace ExamApp.Repository.CQRS.Queries
 	                                                FROM [ExamDB].[dbo].[Students] AS S
 	                                                LEFT JOIN Classes AS C ON S.ClassId=C.Id WHERE S.[DeleteStatus] = 0 AND 
                                                     (S.[Name] LIKE @SEARCHTEXT OR S.[SureName] LIKE @SEARCHTEXT OR C.[Name] LIKE @SEARCHTEXT)
-	                                                ORDER BY S.[RowNum] DESC OFFSET @OFFSET ROWS FETCH NEXT @LIMIT ROWS ONLY";
+	                                                ORDER BY S.[RowNum] DESC OFFSET @OFFSET ROWS FETCH NEXT @LIMIT ROWS ONLY
+
+                                                    SELECT COUNT(S.[Id]) AS TotalCount
+	                                                FROM [ExamDB].[dbo].[Students] AS S
+	                                                LEFT JOIN Classes AS C ON S.ClassId=C.Id WHERE S.[DeleteStatus] = 0 AND 
+                                                    (S.[Name] LIKE @SEARCHTEXT OR S.[SureName] LIKE @SEARCHTEXT OR C.[Name] LIKE @SEARCHTEXT)";
 
         public StudentQuery(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Student>> GetAll()
+        public async Task<IEnumerable<Student>> GetAllAsync()
         {
             try
             {
@@ -80,7 +88,7 @@ namespace ExamApp.Repository.CQRS.Queries
             }
         }
 
-        public async Task<Student> GetById(Guid id)
+        public async Task<Student> GetByIdAsync(Guid id)
         {
             try
             {
@@ -94,11 +102,12 @@ namespace ExamApp.Repository.CQRS.Queries
             }
         }
 
-        public async Task<ListResult<Student>> GetFullSearch(int offset, int limit, string search)
+        public async Task<ListResult<Student>> GetFullSearchAsync(int offset, int limit, string search)
         {
             try
             {
-                var data = await _unitOfWork.GetConnection().QueryMultipleAsync(GetFullSearchQuery, new { offset, limit, search }, _unitOfWork.GetTransaction());
+                var searchStr = string.Format(GetFullSearchQuery, $"N'{search}'");
+                var data = await _unitOfWork.GetConnection().QueryMultipleAsync(searchStr, new { offset, limit }, _unitOfWork.GetTransaction());
                 var result = new ListResult<Student>
                 {
                     List = data.Read<Student>(),
@@ -113,11 +122,11 @@ namespace ExamApp.Repository.CQRS.Queries
             }
         }
 
-        public async Task<ListResult<Student>> GetPagination(int offset, int limit)
+        public async Task<ListResult<Student>> GetPaginationAsync(int offset, int limit)
         {
             try
             {
-                var data = await _unitOfWork.GetConnection().QueryMultipleAsync(GetAllQuery, new { offset, limit }, _unitOfWork.GetTransaction());
+                var data = await _unitOfWork.GetConnection().QueryMultipleAsync(GetPaginationQuery, new { offset, limit }, _unitOfWork.GetTransaction());
                 var result = new ListResult<Student>
                 {
                     List = data.Read<Student>(),

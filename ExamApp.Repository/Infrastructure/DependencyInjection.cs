@@ -8,9 +8,9 @@ namespace ExamApp.Repository.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddRepository(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddRepository(this IServiceCollection services)
         {
-            var repositoryAssembly = Assembly.GetAssembly(typeof(ExampleRepository));
+            var repositoryAssembly = Assembly.GetAssembly(typeof(StudentRepository));
 
             services.RegisterAssemblyPublicNonGenericClasses(repositoryAssembly)
                 .Where(c => c.Name.EndsWith("Repository"))

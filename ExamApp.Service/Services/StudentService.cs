@@ -12,15 +12,15 @@ namespace ExamApp.Service.Services
 {
     public interface IStudentService
     {
-        Task<IEnumerable<Student>> GetAll();
-        Task<Student> GetById(Guid id);
-        Task<ListResult<Student>> GetPagination(int offset, int limit);
-        Task<ListResult<Student>> GetFullSearch(int offset, int limit, string search);
-        Task<Guid> Add(Student item);
-        Task<Guid> Update(Student item);
-        Task<bool> Delete(Guid id);
+        Task<IEnumerable<Student>> GetAllAsync();
+        Task<Student> GetByIdAsync(Guid id);
+        Task<ListResult<Student>> GetPaginationAsync(int offset, int limit);
+        Task<ListResult<Student>> GetFullSearchAsync(int offset, int limit, string search);
+        Task<Guid> AddAsync(Student item);
+        Task<Guid> UpdateAsync(Student item);
+        Task<bool> DeleteAsync(Guid id);
     }
-    internal class StudentService : IStudentService
+    public class StudentService : IStudentService
     {
         private readonly IStudentRepository _studentRepository;
         private readonly IUnitOfWork _unitOfWork;
@@ -31,39 +31,122 @@ namespace ExamApp.Service.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Guid> Add(Student item)
+        public async Task<Guid> AddAsync(Student item)
         {
-            throw new NotImplementedException();
+            using (var tran = _unitOfWork.BeginTransaction())
+            {
+                try
+                {
+                    var result = await _studentRepository.AddAsync(item);
+                    tran.Commit();
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    throw ex;
+                }
+            }
         }
 
-        public async Task<bool> Delete(Guid id)
+        public async Task<bool> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            using (var tran = _unitOfWork.BeginTransaction())
+            {
+                try
+                {
+                    var result = await _studentRepository.DeleteAsync(id);
+                    tran.Commit();
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    throw ex;
+                }
+            }
         }
 
-        public async Task<IEnumerable<Student>> GetAll()
+        public async Task<IEnumerable<Student>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            using (var tran = _unitOfWork.BeginTransaction())
+            {
+                try
+                {
+                    var result = await _studentRepository.GetAllAsync();
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
-        public async Task<Student> GetById(Guid id)
+        public async Task<Student> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            using (var tran = _unitOfWork.BeginTransaction())
+            {
+                try
+                {
+                    var result = await _studentRepository.GetByIdAsync(id);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
-        public async Task<ListResult<Student>> GetFullSearch(int offset, int limit, string search)
+        public async Task<ListResult<Student>> GetFullSearchAsync(int offset, int limit, string search)
         {
-            throw new NotImplementedException();
+            using (var tran = _unitOfWork.BeginTransaction())
+            {
+                try
+                {
+                    var result = await _studentRepository.GetFullSearchAsync(offset, limit, search);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
-        public async Task<ListResult<Student>> GetPagination(int offset, int limit)
+        public async Task<ListResult<Student>> GetPaginationAsync(int offset, int limit)
         {
-            throw new NotImplementedException();
+            await using (var tran = _unitOfWork.BeginTransaction())
+            {
+                try
+                {
+                    var result = await _studentRepository.GetPaginationAsync(offset, limit);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
         }
 
-        public async Task<Guid> Update(Student item)
+        public async Task<Guid> UpdateAsync(Student item)
         {
-            throw new NotImplementedException();
+            using (var tran = _unitOfWork.BeginTransaction())
+            {
+                try
+                {
+                    var result = await _studentRepository.UpdateAsync(item);
+                    tran.Commit();
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    tran.Rollback();
+                    throw ex;
+                }
+            }
         }
     }
 }
