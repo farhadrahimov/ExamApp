@@ -1,4 +1,6 @@
-﻿using ExamApp.Core.Models;
+﻿using AutoMapper;
+using ExamApp.Core.DTO;
+using ExamApp.Core.Models;
 using ExamApp.Service.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +12,12 @@ namespace ExamApp.Api.Controllers
     public class StudentController : Controller
     {
         private readonly IStudentService _studentService;
+        private readonly IMapper _mapper;
 
-        public StudentController(IStudentService studentService)
+        public StudentController(IStudentService studentService, IMapper mapper)
         {
             _studentService = studentService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -45,15 +49,17 @@ namespace ExamApp.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] Student item)
+        public async Task<IActionResult> Post([FromBody] StudentPostModel item)
         {
-            return Ok(await _studentService.AddAsync(item));
+            var mapped = _mapper.Map<Student>(item);
+            return Ok(await _studentService.AddAsync(mapped));
         }
 
         [HttpPut]
-        public async Task<IActionResult> Put([FromBody] Student item)
+        public async Task<IActionResult> Put([FromBody] StudentPutModel item)
         {
-            return Ok(await _studentService.UpdateAsync(item));
+            var mapped = _mapper.Map<Student>(item);
+            return Ok(await _studentService.UpdateAsync(mapped));
         }
 
         [HttpDelete]
