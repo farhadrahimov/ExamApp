@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ExamApp.Core.Models
 {
-    public class ExamResult
+    public class ExamResults
     {
         public Guid Id { get; set; }
         public Guid SubjectId { get; set; }

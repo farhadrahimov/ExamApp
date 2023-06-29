@@ -13,11 +13,11 @@ namespace ExamApp.Repository.Repositories
 {
     public interface IExamResultRepository
     {
-        Task<Guid> AddAsync(ExamResult item);
-        Task<IEnumerable<ExamResult>> GetAllAsync();
-        Task<ExamResult> GetByIdAsync(Guid id);
-        Task<ListResult<ExamResult>> GetPaginationAsync(int offset, int limit);
-        Task<ListResult<ExamResult>> GetFullSearchAsync(ExamResultsRequestModel requestModel);
+        Task<Guid> AddAsync(ExamResults item);
+        Task<IEnumerable<ExamResults>> GetAllAsync();
+        Task<ExamResults> GetByIdAsync(Guid id);
+        Task<ListResult<ExamResults>> GetPaginationAsync(int offset, int limit);
+        Task<ListResult<ExamResults>> GetFullSearchAsync(ExamResultsRequestModel requestModel);
     }
 
     public class ExamResultRepository : IExamResultRepository
@@ -31,31 +31,31 @@ namespace ExamApp.Repository.Repositories
             _examResultCommand = examResultCommand;
         }
 
-        public async Task<Guid> AddAsync(ExamResult item)
+        public async Task<Guid> AddAsync(ExamResults item)
         {
             var result = await _examResultCommand.AddAsync(item);
             return result;
         }
 
-        public async Task<IEnumerable<ExamResult>> GetAllAsync()
+        public async Task<IEnumerable<ExamResults>> GetAllAsync()
         {
             var result = await _examResultQuery.GetAllAsync();
             return result;
         }
 
-        public async Task<ExamResult> GetByIdAsync(Guid id)
+        public async Task<ExamResults> GetByIdAsync(Guid id)
         {
             var result = await _examResultQuery.GetByIdAsync(id);
             return result;
         }
 
-        public async Task<ListResult<ExamResult>> GetFullSearchAsync(ExamResultsRequestModel requestModel)
+        public async Task<ListResult<ExamResults>> GetFullSearchAsync(ExamResultsRequestModel requestModel)
         {
             var result = await _examResultQuery.GetFullSearchAsync(requestModel);
             return result;
         }
 
-        public async Task<ListResult<ExamResult>> GetPaginationAsync(int offset, int limit)
+        public async Task<ListResult<ExamResults>> GetPaginationAsync(int offset, int limit)
         {
             var result = await _examResultQuery.GetPaginationAsync(offset, limit);
             return result;

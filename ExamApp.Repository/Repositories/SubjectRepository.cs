@@ -12,11 +12,11 @@ namespace ExamApp.Repository.Repositories
 {
     public interface ISubjectRepository
     {
-        Task<IEnumerable<Subject>> GetAllAsync();
-        Task<Subject> GetByIdAsync(Guid id);
-        Task<ListResult<Subject>> GetPaginationAsync(int offset, int limit);
-        Task<ListResult<Subject>> GetFullSearchAsync(int offset, int limit, string search);
-        Task<Guid> AddAsync(Subject item);
+        Task<IEnumerable<Subjects>> GetAllAsync();
+        Task<Subjects> GetByIdAsync(Guid id);
+        Task<ListResult<Subjects>> GetPaginationAsync(int offset, int limit);
+        Task<ListResult<Subjects>> GetFullSearchAsync(int offset, int limit, string search);
+        Task<Guid> AddAsync(Subjects item);
     }
 
     public class SubjectRepository : ISubjectRepository
@@ -30,31 +30,31 @@ namespace ExamApp.Repository.Repositories
             _subjectQuery = subjectQuery;
         }
 
-        public async Task<Guid> AddAsync(Subject item)
+        public async Task<Guid> AddAsync(Subjects item)
         {
             var result = await _subjectCommand.AddAsync(item);
             return result;
         }
 
-        public async Task<IEnumerable<Subject>> GetAllAsync()
+        public async Task<IEnumerable<Subjects>> GetAllAsync()
         {
             var result = await _subjectQuery.GetAllAsync();
             return result;
         }
 
-        public async Task<Subject> GetByIdAsync(Guid id)
+        public async Task<Subjects> GetByIdAsync(Guid id)
         {
             var result = await _subjectQuery.GetByIdAsync(id);
             return result;
         }
 
-        public async Task<ListResult<Subject>> GetFullSearchAsync(int offset, int limit, string search)
+        public async Task<ListResult<Subjects>> GetFullSearchAsync(int offset, int limit, string search)
         {
             var result = await _subjectQuery.GetFullSearchAsync(offset, limit, search);
             return result;
         }
 
-        public async Task<ListResult<Subject>> GetPaginationAsync(int offset, int limit)
+        public async Task<ListResult<Subjects>> GetPaginationAsync(int offset, int limit)
         {
             var result = await _subjectQuery.GetPaginationAsync(offset, limit);
             return result;

@@ -12,11 +12,11 @@ namespace ExamApp.Service.Services
 {
     public interface ISubjectService
     {
-        Task<IEnumerable<Subject>> GetAllAsync();
-        Task<Subject> GetByIdAsync(Guid id);
-        Task<ListResult<Subject>> GetPaginationAsync(int offset, int limit);
-        Task<ListResult<Subject>> GetFullSearchAsync(int offset, int limit, string search);
-        Task<Guid> AddAsync(Subject item);
+        Task<IEnumerable<Subjects>> GetAllAsync();
+        Task<Subjects> GetByIdAsync(Guid id);
+        Task<ListResult<Subjects>> GetPaginationAsync(int offset, int limit);
+        Task<ListResult<Subjects>> GetFullSearchAsync(int offset, int limit, string search);
+        Task<Guid> AddAsync(Subjects item);
     }
     public class SubjectService : ISubjectService
     {
@@ -29,7 +29,7 @@ namespace ExamApp.Service.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Guid> AddAsync(Subject item)
+        public async Task<Guid> AddAsync(Subjects item)
         {
             using (var tran = _unitOfWork.BeginTransaction())
             {
@@ -47,7 +47,7 @@ namespace ExamApp.Service.Services
             }
         }
 
-        public async Task<IEnumerable<Subject>> GetAllAsync()
+        public async Task<IEnumerable<Subjects>> GetAllAsync()
         {
             using (var tran = _unitOfWork.BeginTransaction())
             {
@@ -63,7 +63,7 @@ namespace ExamApp.Service.Services
             }
         }
 
-        public async Task<Subject> GetByIdAsync(Guid id)
+        public async Task<Subjects> GetByIdAsync(Guid id)
         {
             using (var tran = _unitOfWork.BeginTransaction())
             {
@@ -79,7 +79,7 @@ namespace ExamApp.Service.Services
             }
         }
 
-        public async Task<ListResult<Subject>> GetFullSearchAsync(int offset, int limit, string search)
+        public async Task<ListResult<Subjects>> GetFullSearchAsync(int offset, int limit, string search)
         {
             using (var tran = _unitOfWork.BeginTransaction())
             {
@@ -95,7 +95,7 @@ namespace ExamApp.Service.Services
             }
         }
 
-        public async Task<ListResult<Subject>> GetPaginationAsync(int offset, int limit)
+        public async Task<ListResult<Subjects>> GetPaginationAsync(int offset, int limit)
         {
             await using (var tran = _unitOfWork.BeginTransaction())
             {

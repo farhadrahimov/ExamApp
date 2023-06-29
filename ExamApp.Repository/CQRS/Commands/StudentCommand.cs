@@ -11,8 +11,8 @@ namespace ExamApp.Repository.CQRS.Commands
 {
     public interface IStudentCommand
     {
-        Task<Guid> AddAsync(Student item);
-        Task<Guid> UpdateAsync(Student item);
+        Task<Guid> AddAsync(Students item);
+        Task<Guid> UpdateAsync(Students item);
         Task<bool> DeleteAsync(Guid id);
     }
     public class StudentCommand : IStudentCommand
@@ -27,21 +27,21 @@ namespace ExamApp.Repository.CQRS.Commands
                                                                ,[ClassId])
                                                          OUTPUT INSERTED.ID
                                                          VALUES
-                                                               (@{nameof(Student.Number)}
-                                                              ,@{nameof(Student.Name)}
-                                                              ,@{nameof(Student.SureName)}
-                                                              ,@{nameof(Student.ClassId)})";
+                                                               (@{nameof(Students.Number)}
+                                                              ,@{nameof(Students.Name)}
+                                                              ,@{nameof(Students.SureName)}
+                                                              ,@{nameof(Students.ClassId)})";
 
         private const string UpdateQuery = $@"UPDATE [dbo].[Students] SET
-                                                               [Number] = @{nameof(Student.Number)}
-                                                              ,[Name] = @{nameof(Student.Name)}
-                                                              ,[SureName] = @{nameof(Student.SureName)}
-                                                              ,[ClassId] = @{nameof(Student.ClassId)}
-                                                               WHERE [Id] = @{nameof(Student.Id)}";
+                                                               [Number] = @{nameof(Students.Number)}
+                                                              ,[Name] = @{nameof(Students.Name)}
+                                                              ,[SureName] = @{nameof(Students.SureName)}
+                                                              ,[ClassId] = @{nameof(Students.ClassId)}
+                                                               WHERE [Id] = @{nameof(Students.Id)}";
 
         private const string DeleteQuery = $@"UPDATE [dbo].[Students] SET
                                                               [DeleteStatus] = 1
-                                                               WHERE [Id] = @{nameof(Student.Id)}";
+                                                               WHERE [Id] = @{nameof(Students.Id)}";
         #endregion
 
         public StudentCommand(IUnitOfWork unitOfWork)
@@ -49,7 +49,7 @@ namespace ExamApp.Repository.CQRS.Commands
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Guid> AddAsync(Student item)
+        public async Task<Guid> AddAsync(Students item)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace ExamApp.Repository.CQRS.Commands
             }
         }
 
-        public async Task<Guid> UpdateAsync(Student item)
+        public async Task<Guid> UpdateAsync(Students item)
         {
             try
             {

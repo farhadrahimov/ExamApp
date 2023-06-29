@@ -12,10 +12,10 @@ namespace ExamApp.Repository.CQRS.Queries
 {
     public interface ISubjectQuery
     {
-        Task<IEnumerable<Subject>> GetAllAsync();
-        Task<Subject> GetByIdAsync(Guid id);
-        Task<ListResult<Subject>> GetPaginationAsync(int offset, int limit);
-        Task<ListResult<Subject>> GetFullSearchAsync(int offset, int limit, string search);
+        Task<IEnumerable<Subjects>> GetAllAsync();
+        Task<Subjects> GetByIdAsync(Guid id);
+        Task<ListResult<Subjects>> GetPaginationAsync(int offset, int limit);
+        Task<ListResult<Subjects>> GetFullSearchAsync(int offset, int limit, string search);
     }
     public class SubjectQuery : ISubjectQuery
     {
@@ -74,11 +74,11 @@ namespace ExamApp.Repository.CQRS.Queries
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<Subject>> GetAllAsync()
+        public async Task<IEnumerable<Subjects>> GetAllAsync()
         {
             try
             {
-                var result = await _unitOfWork.GetConnection().QueryAsync<Subject>(GetAllQuery, null, _unitOfWork.GetTransaction());
+                var result = await _unitOfWork.GetConnection().QueryAsync<Subjects>(GetAllQuery, null, _unitOfWork.GetTransaction());
                 return result;
             }
             catch (Exception ex)
@@ -88,11 +88,11 @@ namespace ExamApp.Repository.CQRS.Queries
             }
         }
 
-        public async Task<Subject> GetByIdAsync(Guid id)
+        public async Task<Subjects> GetByIdAsync(Guid id)
         {
             try
             {
-                var result = await _unitOfWork.GetConnection().QueryFirstOrDefaultAsync<Subject>(GetByIdQuery, new { id }, _unitOfWork.GetTransaction());
+                var result = await _unitOfWork.GetConnection().QueryFirstOrDefaultAsync<Subjects>(GetByIdQuery, new { id }, _unitOfWork.GetTransaction());
                 return result;
             }
             catch (Exception ex)
@@ -102,15 +102,15 @@ namespace ExamApp.Repository.CQRS.Queries
             }
         }
 
-        public async Task<ListResult<Subject>> GetFullSearchAsync(int offset, int limit, string search)
+        public async Task<ListResult<Subjects>> GetFullSearchAsync(int offset, int limit, string search)
         {
             try
             {
                 var searchStr = string.Format(GetFullSearchQuery, $"N'{search}'");
                 var data = await _unitOfWork.GetConnection().QueryMultipleAsync(searchStr, new { offset, limit }, _unitOfWork.GetTransaction());
-                var result = new ListResult<Subject>
+                var result = new ListResult<Subjects>
                 {
-                    List = data.Read<Subject>(),
+                    List = data.Read<Subjects>(),
                     TotalCount = data.ReadFirst<int>()
                 };
                 return result;
@@ -122,14 +122,14 @@ namespace ExamApp.Repository.CQRS.Queries
             }
         }
 
-        public async Task<ListResult<Subject>> GetPaginationAsync(int offset, int limit)
+        public async Task<ListResult<Subjects>> GetPaginationAsync(int offset, int limit)
         {
             try
             {
                 var data = await _unitOfWork.GetConnection().QueryMultipleAsync(GetPaginationQuery, new { offset, limit }, _unitOfWork.GetTransaction());
-                var result = new ListResult<Subject>
+                var result = new ListResult<Subjects>
                 {
-                    List = data.Read<Subject>(),
+                    List = data.Read<Subjects>(),
                     TotalCount = data.ReadFirst<int>()
                 };
                 return result;

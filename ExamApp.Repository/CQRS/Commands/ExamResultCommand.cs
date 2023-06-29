@@ -6,7 +6,7 @@ namespace ExamApp.Repository.CQRS.Commands
 {
     public interface IExamResultCommand
     {
-        Task<Guid> AddAsync(ExamResult item);
+        Task<Guid> AddAsync(ExamResults item);
     }
     public class ExamResultCommand : IExamResultCommand
     {
@@ -18,17 +18,17 @@ namespace ExamApp.Repository.CQRS.Commands
                                                                ,[Grade])
                                                          OUTPUT INSERTED.ID
                                                          VALUES
-                                                               (@{nameof(ExamResult.SubjectId)}
-                                                              ,@{nameof(ExamResult.StudentId)}
-                                                              ,@{nameof(ExamResult.Date)}
-                                                              ,@{nameof(ExamResult.Grade)})";
+                                                               (@{nameof(ExamResults.SubjectId)}
+                                                              ,@{nameof(ExamResults.StudentId)}
+                                                              ,@{nameof(ExamResults.Date)}
+                                                              ,@{nameof(ExamResults.Grade)})";
 
         public ExamResultCommand(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Guid> AddAsync(ExamResult item)
+        public async Task<Guid> AddAsync(ExamResults item)
         {
             try
             {

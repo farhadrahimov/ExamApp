@@ -51,7 +51,7 @@ namespace ExamApp.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] SubjectPostModel item)
         {
-            var mapped = _mapper.Map<Subject>(item);
+            var mapped = _mapper.Map<Subjects>(item);
             return Ok(await _subjectService.AddAsync(mapped));
         }
     }

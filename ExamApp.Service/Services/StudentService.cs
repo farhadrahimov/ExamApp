@@ -12,12 +12,12 @@ namespace ExamApp.Service.Services
 {
     public interface IStudentService
     {
-        Task<IEnumerable<Student>> GetAllAsync();
-        Task<Student> GetByIdAsync(Guid id);
-        Task<ListResult<Student>> GetPaginationAsync(int offset, int limit);
-        Task<ListResult<Student>> GetFullSearchAsync(int offset, int limit, string search);
-        Task<Guid> AddAsync(Student item);
-        Task<Guid> UpdateAsync(Student item);
+        Task<IEnumerable<Students>> GetAllAsync();
+        Task<Students> GetByIdAsync(Guid id);
+        Task<ListResult<Students>> GetPaginationAsync(int offset, int limit);
+        Task<ListResult<Students>> GetFullSearchAsync(int offset, int limit, string search);
+        Task<Guid> AddAsync(Students item);
+        Task<Guid> UpdateAsync(Students item);
         Task<bool> DeleteAsync(Guid id);
     }
     public class StudentService : IStudentService
@@ -31,7 +31,7 @@ namespace ExamApp.Service.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Guid> AddAsync(Student item)
+        public async Task<Guid> AddAsync(Students item)
         {
             using (var tran = _unitOfWork.BeginTransaction())
             {
@@ -67,7 +67,7 @@ namespace ExamApp.Service.Services
             }
         }
 
-        public async Task<IEnumerable<Student>> GetAllAsync()
+        public async Task<IEnumerable<Students>> GetAllAsync()
         {
             using (var tran = _unitOfWork.BeginTransaction())
             {
@@ -83,7 +83,7 @@ namespace ExamApp.Service.Services
             }
         }
 
-        public async Task<Student> GetByIdAsync(Guid id)
+        public async Task<Students> GetByIdAsync(Guid id)
         {
             using (var tran = _unitOfWork.BeginTransaction())
             {
@@ -99,7 +99,7 @@ namespace ExamApp.Service.Services
             }
         }
 
-        public async Task<ListResult<Student>> GetFullSearchAsync(int offset, int limit, string search)
+        public async Task<ListResult<Students>> GetFullSearchAsync(int offset, int limit, string search)
         {
             using (var tran = _unitOfWork.BeginTransaction())
             {
@@ -115,7 +115,7 @@ namespace ExamApp.Service.Services
             }
         }
 
-        public async Task<ListResult<Student>> GetPaginationAsync(int offset, int limit)
+        public async Task<ListResult<Students>> GetPaginationAsync(int offset, int limit)
         {
             await using (var tran = _unitOfWork.BeginTransaction())
             {
@@ -131,7 +131,7 @@ namespace ExamApp.Service.Services
             }
         }
 
-        public async Task<Guid> UpdateAsync(Student item)
+        public async Task<Guid> UpdateAsync(Students item)
         {
             using (var tran = _unitOfWork.BeginTransaction())
             {

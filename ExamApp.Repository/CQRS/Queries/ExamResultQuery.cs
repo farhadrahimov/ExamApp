@@ -13,10 +13,10 @@ namespace ExamApp.Repository.CQRS.Queries
 {
     public interface IExamResultQuery
     {
-        Task<IEnumerable<ExamResult>> GetAllAsync();
-        Task<ExamResult> GetByIdAsync(Guid id);
-        Task<ListResult<ExamResult>> GetPaginationAsync(int offset, int limit);
-        Task<ListResult<ExamResult>> GetFullSearchAsync(ExamResultsRequestModel requestModel);
+        Task<IEnumerable<ExamResults>> GetAllAsync();
+        Task<ExamResults> GetByIdAsync(Guid id);
+        Task<ListResult<ExamResults>> GetPaginationAsync(int offset, int limit);
+        Task<ListResult<ExamResults>> GetFullSearchAsync(ExamResultsRequestModel requestModel);
     }
 
     public class ExamResultQuery : IExamResultQuery
@@ -99,11 +99,11 @@ namespace ExamApp.Repository.CQRS.Queries
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IEnumerable<ExamResult>> GetAllAsync()
+        public async Task<IEnumerable<ExamResults>> GetAllAsync()
         {
             try
             {
-                var result = await _unitOfWork.GetConnection().QueryAsync<ExamResult>(GetAllQuery, null, _unitOfWork.GetTransaction());
+                var result = await _unitOfWork.GetConnection().QueryAsync<ExamResults>(GetAllQuery, null, _unitOfWork.GetTransaction());
                 return result;
             }
             catch (Exception ex)
@@ -113,11 +113,11 @@ namespace ExamApp.Repository.CQRS.Queries
             }
         }
 
-        public async Task<ExamResult> GetByIdAsync(Guid id)
+        public async Task<ExamResults> GetByIdAsync(Guid id)
         {
             try
             {
-                var result = await _unitOfWork.GetConnection().QueryFirstOrDefaultAsync<ExamResult>(GetByIdQuery, new { id }, _unitOfWork.GetTransaction());
+                var result = await _unitOfWork.GetConnection().QueryFirstOrDefaultAsync<ExamResults>(GetByIdQuery, new { id }, _unitOfWork.GetTransaction());
                 return result;
             }
             catch (Exception ex)
@@ -127,15 +127,15 @@ namespace ExamApp.Repository.CQRS.Queries
             }
         }
 
-        public async Task<ListResult<ExamResult>> GetFullSearchAsync(ExamResultsRequestModel requestModel)
+        public async Task<ListResult<ExamResults>> GetFullSearchAsync(ExamResultsRequestModel requestModel)
         {
             try
             {
                 var searchStr = string.Format(GetFullSearchQuery, $"N'{requestModel.Search}'");
                 var data = await _unitOfWork.GetConnection().QueryMultipleAsync(searchStr, requestModel, _unitOfWork.GetTransaction());
-                var result = new ListResult<ExamResult>
+                var result = new ListResult<ExamResults>
                 {
-                    List = data.Read<ExamResult>(),
+                    List = data.Read<ExamResults>(),
                     TotalCount = data.ReadFirst<int>()
                 };
                 return result;
@@ -147,14 +147,14 @@ namespace ExamApp.Repository.CQRS.Queries
             }
         }
 
-        public async Task<ListResult<ExamResult>> GetPaginationAsync(int offset, int limit)
+        public async Task<ListResult<ExamResults>> GetPaginationAsync(int offset, int limit)
         {
             try
             {
                 var data = await _unitOfWork.GetConnection().QueryMultipleAsync(GetPaginationQuery, new { offset, limit }, _unitOfWork.GetTransaction());
-                var result = new ListResult<ExamResult>
+                var result = new ListResult<ExamResults>
                 {
-                    List = data.Read<ExamResult>(),
+                    List = data.Read<ExamResults>(),
                     TotalCount = data.ReadFirst<int>()
                 };
                 return result;

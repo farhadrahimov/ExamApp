@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ExamApp.Core.Models
 {
-    public class Subject : BaseModel
+    public class Subjects : BaseModel
     {
         [StringLength(3)]
         public string Code { get; set; } = string.Empty;

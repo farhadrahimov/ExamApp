@@ -11,7 +11,7 @@ namespace ExamApp.Repository.CQRS.Commands
 {
     public interface ISubjectCommand
     {
-        Task<Guid> AddAsync(Subject item);
+        Task<Guid> AddAsync(Subjects item);
     }
     public class SubjectCommand : ISubjectCommand
     {
@@ -29,11 +29,11 @@ namespace ExamApp.Repository.CQRS.Commands
                                                                ,[TeacherId])
                                                          OUTPUT INSERTED.ID
                                                          VALUES
-                                                               (@{nameof(Subject.Code)}
-                                                              ,@{nameof(Subject.Name)}
-                                                              ,@{nameof(Subject.Class)}
-                                                              ,@{nameof(Subject.TeacherId)})";
-        public async Task<Guid> AddAsync(Subject item)
+                                                               (@{nameof(Subjects.Code)}
+                                                              ,@{nameof(Subjects.Name)}
+                                                              ,@{nameof(Subjects.Class)}
+                                                              ,@{nameof(Subjects.TeacherId)})";
+        public async Task<Guid> AddAsync(Subjects item)
         {
             try
             {

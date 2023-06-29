@@ -8,12 +8,12 @@ namespace ExamApp.Api.AutoMapper
     {
         public UserProfile() 
         {
-            CreateMap<ExamResultPostModel, ExamResult>();
+            CreateMap<ExamResultPostModel, ExamResults>();
 
-            CreateMap<SubjectPostModel, Subject>();
+            CreateMap<SubjectPostModel, Subjects>();
 
-            CreateMap<StudentPostModel, Student>();
-            CreateMap<StudentPutModel, Student>();
+            CreateMap<StudentPostModel, Students>();
+            CreateMap<StudentPutModel, Students>();
         }
     }
 }

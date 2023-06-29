@@ -12,12 +12,12 @@ namespace ExamApp.Repository.Repositories
 {
     public interface IStudentRepository
     {
-        Task<IEnumerable<Student>> GetAllAsync();
-        Task<Student> GetByIdAsync(Guid id);
-        Task<ListResult<Student>> GetPaginationAsync(int offset, int limit);
-        Task<ListResult<Student>> GetFullSearchAsync(int offset, int limit, string search);
-        Task<Guid> AddAsync(Student item);
-        Task<Guid> UpdateAsync(Student item);
+        Task<IEnumerable<Students>> GetAllAsync();
+        Task<Students> GetByIdAsync(Guid id);
+        Task<ListResult<Students>> GetPaginationAsync(int offset, int limit);
+        Task<ListResult<Students>> GetFullSearchAsync(int offset, int limit, string search);
+        Task<Guid> AddAsync(Students item);
+        Task<Guid> UpdateAsync(Students item);
         Task<bool> DeleteAsync(Guid id);
     }
     public class StudentRepository : IStudentRepository
@@ -31,7 +31,7 @@ namespace ExamApp.Repository.Repositories
             _studentQuery = studentQuery;
         }
 
-        public async Task<Guid> AddAsync(Student item)
+        public async Task<Guid> AddAsync(Students item)
         {
             var result = await _studentCommand.AddAsync(item);
             return result;
@@ -43,31 +43,31 @@ namespace ExamApp.Repository.Repositories
             return result;
         }
 
-        public async Task<IEnumerable<Student>> GetAllAsync()
+        public async Task<IEnumerable<Students>> GetAllAsync()
         {
             var result = await _studentQuery.GetAllAsync();
             return result;
         }
 
-        public async Task<Student> GetByIdAsync(Guid id)
+        public async Task<Students> GetByIdAsync(Guid id)
         {
             var result = await _studentQuery.GetByIdAsync(id);
             return result;
         }
 
-        public async Task<ListResult<Student>> GetFullSearchAsync(int offset, int limit, string search)
+        public async Task<ListResult<Students>> GetFullSearchAsync(int offset, int limit, string search)
         {
             var result = await _studentQuery.GetFullSearchAsync(offset, limit, search);
             return result;
         }
 
-        public async Task<ListResult<Student>> GetPaginationAsync(int offset, int limit)
+        public async Task<ListResult<Students>> GetPaginationAsync(int offset, int limit)
         {
             var result = await _studentQuery.GetPaginationAsync(offset, limit);
             return result;
         }
 
-        public async Task<Guid> UpdateAsync(Student item)
+        public async Task<Guid> UpdateAsync(Students item)
         {
             var result = await _studentCommand.UpdateAsync(item);
             return result;

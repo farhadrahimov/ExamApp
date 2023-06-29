@@ -51,14 +51,14 @@ namespace ExamApp.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] StudentPostModel item)
         {
-            var mapped = _mapper.Map<Student>(item);
+            var mapped = _mapper.Map<Students>(item);
             return Ok(await _studentService.AddAsync(mapped));
         }
 
         [HttpPut]
         public async Task<IActionResult> Put([FromBody] StudentPutModel item)
         {
-            var mapped = _mapper.Map<Student>(item);
+            var mapped = _mapper.Map<Students>(item);
             return Ok(await _studentService.UpdateAsync(mapped));
         }
 
