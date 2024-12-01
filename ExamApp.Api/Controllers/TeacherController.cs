@@ -4,6 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ExamApp.Api.Controllers
 {
+    public class TestClass
+    {
+        public int MyProperty { get; set; }
+    }
+
     [Route("api/[controller]")]
     [ApiController]
     public class TeacherController : Controller
